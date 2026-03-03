@@ -1,0 +1,41 @@
+{
+  "name": "next-log",
+  "version": "0.1.0",
+  "description": "Unified logging for Next.js — server, client, edge middleware. One API, every environment.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./middleware": {
+      "import": "./dist/middleware/index.mjs",
+      "require": "./dist/middleware/index.js",
+      "types": "./dist/middleware/index.d.ts"
+    },
+    "./api": {
+      "import": "./dist/api/route-handler.mjs",
+      "require": "./dist/api/route-handler.js",
+      "types": "./dist/api/route-handler.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": ["nextjs", "logging", "logger", "next.js", "server-components", "edge", "typescript"],
+  "license": "MIT",
+  "peerDependencies": {
+    "next": ">=14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "next": "^14.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}
