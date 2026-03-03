@@ -1,46 +1,52 @@
 // ─── next-log/src/transports/file.ts ─────────────────────────────────────────
 //
-// ⚠️  Yalnız server mühitində işləyir (node:fs lazımdır).
-//     Client və edge-də istifadə etmə.
+// ⚠️  Server-only. node:fs lazımdır.
+//     fs dynamic olaraq yüklənir — client bundle-a daxil olmur.
 
 import type { Transport } from '../core/types'
 import type { LogEntry } from '../core/types'
 import type { Formatter } from '../core/types'
 import { JsonFormatter } from '../formatters/json'
-import { appendFileSync, mkdirSync } from 'node:fs'
-import { dirname } from 'node:path'
 
 interface FileTransportConfig {
-  /** Log faylının yolu. Default: 'logs/app.log' */
   path?: string
-  /** Formatter. Default: JsonFormatter */
   formatter?: Formatter
 }
 
 export class FileTransport implements Transport {
-  private readonly path: string
+  private readonly filePath: string
   private readonly formatter: Formatter
   private initialized = false
 
   constructor(config: FileTransportConfig = {}) {
-    this.path      = config.path      ?? 'logs/app.log'
+    this.filePath  = config.path      ?? 'logs/app.log'
     this.formatter = config.formatter ?? new JsonFormatter()
   }
 
   private ensureDir(): void {
     if (this.initialized) return
-    mkdirSync(dirname(this.path), { recursive: true })
-    this.initialized = true
+    try {
+      // Dynamic require — client bundle-a daxil olmur
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { mkdirSync } = require('node:fs')
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { dirname } = require('node:path')
+      mkdirSync(dirname(this.filePath), { recursive: true })
+      this.initialized = true
+    } catch {
+      // edge və ya client mühitində sessizce uğursuz ol
+    }
   }
 
   write(entry: LogEntry): void {
     try {
       this.ensureDir()
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { appendFileSync } = require('node:fs')
       const line = this.formatter.format(entry) + '\n'
-      appendFileSync(this.path, line, 'utf8')
-    } catch (err) {
-      // File transport xətası digər log-ları bloklamamalıdır
-      console.error('[next-log] FileTransport write error:', err)
+      appendFileSync(this.filePath, line, 'utf8')
+    } catch {
+      // server-da deyilsə, sessizce keç
     }
   }
 }

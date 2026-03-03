@@ -1,6 +1,6 @@
 {
   "name": "@asimsafar/next-log",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Unified logging for Next.js — server, client, edge middleware. One API, every environment.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -57,5 +57,12 @@
     "next": "^14.0.0",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0"
+  },
+  "browser": {
+    "node:fs": false,
+    "node:path": false,
+    "fs": false,
+    "path": false,
+    "async_hooks": false
   }
 }

@@ -10,5 +10,13 @@ export default defineConfig({
   dts: true,
   clean: true,
   splitting: false,
-  external: ['next', 'react', 'async_hooks'],
+  external: [
+    'next',
+    'react',
+    'async_hooks',
+    'fs',
+    'path',
+    'node:fs',
+    'node:path',
+  ],
 })
