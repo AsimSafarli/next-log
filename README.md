@@ -1,9 +1,9 @@
-# next-log
+# @asimsafar/next-log
 
 Unified logging for Next.js. One API across Server Components, Client Components, and Edge Middleware — with automatic `requestId` propagation.
 
 ```bash
-npm install next-log
+npm install @asimsafar/next-log
 ```
 
 ---
@@ -18,7 +18,7 @@ Next.js has no built-in logging solution:
 | Client Component | Logs stay in the browser — never reach your server |
 | Edge Middleware | Context is lost before it reaches Server Components |
 
-`next-log` solves all three with a single API.
+`@asimsafar/next-log` solves all three with a single API.
 
 ---
 
@@ -52,7 +52,7 @@ Output (prod):
 
 ```ts
 // lib/logger.ts
-import { createLogger } from 'next-log'
+import { createLogger } from '@asimsafar/next-log'
 
 export const log = createLogger({
   level: 'info', // 'debug' | 'info' | 'warn' | 'error'
@@ -63,7 +63,7 @@ export const log = createLogger({
 
 ```ts
 // middleware.ts
-import { withLogging } from 'next-log/middleware'
+import { withLogging } from '@asimsafar/next-log/middleware'
 import { NextResponse } from 'next/server'
 
 export default withLogging(async (req) => {
@@ -79,7 +79,7 @@ export const config = {
 
 ```ts
 // app/api/next-log/route.ts
-export { logHandler as POST } from 'next-log/api'
+export { logHandler as POST } from '@asimsafar/next-log/api'
 ```
 
 ---
@@ -163,7 +163,7 @@ createLogger({
 ### Custom transport
 
 ```ts
-import { createLogger, type Transport, type LogEntry } from 'next-log'
+import { createLogger, type Transport, type LogEntry } from '@asimsafar/next-log'
 
 const datadogTransport: Transport = {
   write(entry: LogEntry) {
@@ -182,7 +182,7 @@ log.addTransport(datadogTransport)
 ### Manual context
 
 ```ts
-import { setContext } from 'next-log'
+import { setContext } from '@asimsafar/next-log'
 
 // Add fields to the current async context
 setContext({ userId: session.user.id, plan: 'pro' })
@@ -208,12 +208,12 @@ export default withLogging(handler, {
 
 ```ts
 {
-  timestamp:  string                              // ISO 8601
+  timestamp:  string                               // ISO 8601
   level:      'debug' | 'info' | 'warn' | 'error'
   msg:        string
   env:        'server' | 'client' | 'edge'
-  requestId?: string                              // set by withLogging()
-  traceId?:   string                              // set by withLogging()
+  requestId?: string                               // set by withLogging()
+  traceId?:   string                               // set by withLogging()
   // ...any additional fields you pass
 }
 ```
