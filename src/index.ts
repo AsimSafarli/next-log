@@ -24,15 +24,11 @@ interface NextLogConfig extends LoggerConfig {
   logEndpoint?: string
 }
 
-// ── Mühit detection ───────────────────────────────────────────────────────────
-
 function currentEnv(): 'server' | 'client' | 'edge' {
   if (typeof window !== 'undefined') return 'client'
   if (typeof EdgeRuntime !== 'undefined') return 'edge'
   return 'server'
 }
-
-// ── createLogger ──────────────────────────────────────────────────────────────
 
 export function createLogger(config: NextLogConfig = {}): Logger {
   const env    = currentEnv()
@@ -52,7 +48,6 @@ export function createLogger(config: NextLogConfig = {}): Logger {
   const envTransports: EnvTransport[] =
     config.transports?.[env] ?? defaultTransports[env] ?? ['console']
 
-  // exactOptionalPropertyTypes uyğunluğu — undefined-i filter et
   const loggerConfig: LoggerConfig = {}
   if (config.level !== undefined)       loggerConfig.level       = config.level
   if (config.defaultMeta !== undefined) loggerConfig.defaultMeta = config.defaultMeta
@@ -64,7 +59,6 @@ export function createLogger(config: NextLogConfig = {}): Logger {
     if (t === 'console') {
       logger.addTransport(new ConsoleTransport(formatter))
     } else if (t === 'http') {
-      // endpoint undefined olsa HttpTransport öz default-unu işlədir
       const httpOpts = config.logEndpoint !== undefined
         ? { endpoint: config.logEndpoint }
         : {}
