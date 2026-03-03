@@ -27,8 +27,28 @@
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": ["nextjs", "logging", "logger", "next.js", "server-components", "edge", "typescript"],
+  "keywords": [
+    "nextjs",
+    "logging",
+    "logger",
+    "next.js",
+    "server-components",
+    "edge",
+    "typescript",
+    "middleware",
+    "request-id",
+    "async-local-storage"
+  ],
+  "author": "Asim Safarli",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AsimSafarli/next-log"
+  },
+  "homepage": "https://github.com/AsimSafarli/next-log#readme",
+  "bugs": {
+    "url": "https://github.com/AsimSafarli/next-log/issues"
+  },
   "peerDependencies": {
     "next": ">=14.0.0"
   },
